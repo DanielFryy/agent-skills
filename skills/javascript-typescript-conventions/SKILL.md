@@ -1,11 +1,29 @@
 ---
 name: javascript-typescript-conventions
-description: Apply JavaScript and TypeScript conventions for destructuring, function bodies, and guard clauses when writing or reviewing JS, TS, JSX, or TSX.
+description: Apply JavaScript and TypeScript conventions for compact objects, destructuring, function bodies, and guard clauses when writing or reviewing JS, TS, JSX, or TSX.
 ---
 
 # JavaScript and TypeScript conventions
 
 Apply these conventions to code being written or edited. They also apply to callbacks and component functions.
+
+## Formatter and line width
+
+Use the project's configured formatter, such as Prettier, oxfmt, Biome, or another formatter. Read its configuration and any overrides or command options that apply to the file to determine the effective print width or line width. If no width is configured, use that formatter's default. If no formatter is configured, follow the project's documented line-width convention or surrounding code style.
+
+Apply this width to every rule below about fitting on one line, including indentation and surrounding syntax. Run the project's formatter after edits. If it forces a different layout, report the conflict rather than changing formatter settings or adding ignore directives solely to enforce this convention.
+
+## Compact object literals
+
+Write an object literal on one line when the complete resulting line fits within the project's line width. Apply this to nested objects independently: an inner object can fit on one line even when its parent needs multiple lines. Preserve comments and content that require line breaks.
+
+```ts
+JSON.stringify({
+  fingerprint: { name, size, lastModified },
+  lastPage: 1,
+  zoom: "fit-to-width"
+});
+```
 
 ## Object parameters
 
@@ -38,7 +56,7 @@ Follow the long-destructuring rules below when splitting declarations. Preserve 
 
 ## Long destructuring declarations
 
-Read the project's Prettier configuration for its print width. When an object destructuring declaration would exceed that width, split it into declarations that each fit. If the remaining object is not needed, read the original object in each declaration:
+Use the effective line width from the formatter guidance above. When an object destructuring declaration would exceed that width, split it into declarations that each fit. If the remaining object is not needed, read the original object in each declaration:
 
 ```ts
 const { key1, key2, key3 } = obj;
@@ -76,10 +94,7 @@ Every function spanning more than one line must have an explicit body enclosed i
 
 ```ts
 const createResult = (value: number) => {
-  return {
-    value,
-    valid: Number.isFinite(value)
-  };
+  return { value, valid: Number.isFinite(value) };
 };
 ```
 

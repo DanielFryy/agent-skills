@@ -16,21 +16,21 @@ These are opinionated coding conventions. The Next.js skill adapts paths, packag
 Run in the project where you want the skills:
 
 ```sh
-bunx skills add DanielFryy/agent-skills --skill next-page-composition --skill javascript-typescript-conventions
+npx skills add DanielFryy/agent-skills --skill next-page-composition --skill javascript-typescript-conventions
 ```
 
 To install only one:
 
 ```sh
-bunx skills add DanielFryy/agent-skills --skill javascript-typescript-conventions
+npx skills add DanielFryy/agent-skills --skill javascript-typescript-conventions
 ```
 
-Add `--agent codex` to target Codex, or `--global` to install at user scope. The CLI lets you choose agents interactively when the agent option is omitted. You can also run the same commands with `npx` in projects that use npm.
+Add `--agent codex` to target Codex, or `--global` to install at user scope. The CLI lets you choose agents interactively when the agent option is omitted.
 
 ## Updates
 
 ```sh
-bunx skills update
+npx skills update
 ```
 
 ## Discovery on skills.sh
