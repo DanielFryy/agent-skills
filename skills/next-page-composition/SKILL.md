@@ -16,6 +16,25 @@ Treat `src/app/**/page.tsx` as the route shell:
 - Keep route files short and readable. A page should mostly import components, export metadata, declare a named `*Page` component, compose the page surface, and export it as default.
 - When a route starts carrying feature UI, extract sections into components instead of letting the page grow past about 100 lines.
 
+## Shared page and layout props
+
+Maintain a shared `types/App.types.ts` file in the target project. Place `types` at the same directory level as `app` or `components`: use `src/types/App.types.ts` when those directories are under `src/`, or root-level `types/App.types.ts` when they are at the project root.
+
+The file must define these shared types, preserving any unrelated existing exports:
+
+```ts
+// Pages and layouts types and interfaces
+import type { ReactNode } from "react";
+
+export type PageProps = Readonly<{ children: ReactNode; }>;
+
+export type LayoutProps = Readonly<{ children: ReactNode; }>;
+```
+
+Any page-specific props created must extend this shared `PageProps`; any layout-specific props created must extend this shared `LayoutProps`. Import the base with `import type` using the project's alias or relative path. Use interface `extends` or a type intersection to add fields, and use the shared type directly when no additional fields are needed. Keep these declarations in the appropriate `.types.ts` file.
+
+Extending a readonly base does not make newly added fields readonly. Apply the parameter rule below to the complete props type, not just its base.
+
 ## Component Shape
 
 Declare components, including route pages, as named `const` arrow functions and export them as default in a separate statement. Use this form instead of the `function` keyword:
@@ -52,8 +71,23 @@ Keep type and interface declarations out of `ComponentName.tsx`. Put component-o
 When `ComponentName.types.ts` defines the component props, name that type `ComponentNameProps`. Import it in `ComponentName.tsx` as:
 
 ```ts
-import { ComponentNameProps as Props } from "./ComponentName.types";
+import type { ComponentNameProps as Props } from "./ComponentName.types";
 ```
+
+The component must use the imported `Props` alias for its parameter. Use `props: Readonly<Props>` only when the complete imported type is not already wrapped in TypeScript's `Readonly` utility type. If it is already wrapped, including through a type alias, use `props: Props` without adding another wrapper. Accept the parameter as `props` and destructure it inside the function body:
+
+```tsx
+const ComponentName = (props: Readonly<Props>) => {
+  const { children } = props;
+  return <div>{children}</div>;
+};
+
+export default ComponentName;
+```
+
+This example assumes `ComponentNameProps` includes `children`; destructure only the props the component actually uses.
+
+For example, if the type file declares `export type ComponentNameProps = Readonly<{ children: ReactNode; }>;`, the component signature must be `const ComponentName = (props: Props) => { ... };`. The shared `PageProps` and `LayoutProps` above are also already wrapped, so use `props: Props` when importing either directly as `Props`.
 
 When creating `ComponentName.helpers.ts`, make its first line:
 

@@ -1,6 +1,6 @@
 ---
 name: javascript-typescript-conventions
-description: Apply JavaScript and TypeScript conventions for compact objects, destructuring, function bodies, and guard clauses when writing or reviewing JS, TS, JSX, or TSX.
+description: Apply JavaScript and TypeScript conventions for compact objects and types, destructuring, function bodies, and guard clauses when writing or reviewing JS, TS, JSX, or TSX.
 ---
 
 # JavaScript and TypeScript conventions
@@ -23,6 +23,28 @@ JSON.stringify({
   lastPage: 1,
   zoom: "fit-to-width"
 });
+```
+
+## Compact types and interfaces
+
+Apply the same one-line rule to TypeScript object type literals, type aliases, and interface declarations. Keep them on one line when the complete resulting line fits within the project's line width, including indentation, declaration names, generic wrappers such as `Readonly<...>`, and surrounding syntax. Apply the rule to nested types independently, and preserve comments and content that require line breaks.
+
+When an inline parameter type fits, also collapse the surrounding function signature onto one line if the entire signature through the opening body brace fits. A multiline function body does not require a multiline signature. Preserve the existing type structure and follow the project's formatter for member separators.
+
+```ts
+type LayoutProps = Readonly<{ children: React.ReactNode; }>;
+interface NamedItem { name: string; }
+```
+
+```tsx
+const RootLayout = (props: Readonly<{ children: React.ReactNode; }>) => {
+  const { children } = props;
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+};
 ```
 
 ## Object parameters
