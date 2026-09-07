@@ -111,6 +111,10 @@ Prefer spreading an existing object into a child component when its keys match t
 
 Keep explicit props for renamed or transformed values. Put intentional overrides after the spread. Before replacing explicit assignments, check that extra keys do not change the child's behavior or get forwarded unintentionally to a DOM element; select the needed subset when the whole object cannot be passed safely.
 
+Do not explicitly pass a prop that is already included in a spread with the same unchanged value. Destructuring a value from the spread object does not make it an override: use `<ChildComponent {...props} />` instead of `<ChildComponent {...props} value={value} />` when `value` comes unchanged from `props`. Keep explicit props when they add a missing key or intentionally change its value.
+
+When removing a redundant prop, preserve type safety. A guard can narrow a destructured binding without narrowing the original object's property type. If the child requires that narrower type, adjust the prop types or construct an appropriately typed subset instead of adding a type assertion or retaining the duplicate solely to satisfy TypeScript.
+
 ```tsx
 return <ChildComponent {...data} />;
 ```
