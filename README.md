@@ -7,7 +7,7 @@ Reusable coding conventions for Next.js, JavaScript, and TypeScript, extracted f
 | Skill                                                                                  | What it covers                                                                                   |
 | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | [next-page-composition](skills/next-page-composition/SKILL.md)                         | Server-first App Router pages, metadata, colocated component files, JSX handlers, and props.     |
-| [javascript-typescript-conventions](skills/javascript-typescript-conventions/SKILL.md) | Body destructuring, guard clauses, explicit multiline function bodies, and functions in objects. |
+| [javascript-typescript-conventions](skills/javascript-typescript-conventions/SKILL.md) | Named constants before default exports, body destructuring, guard clauses, explicit multiline function bodies, and functions in objects. |
 
 These are opinionated coding conventions. The Next.js skill adapts paths, package manager commands, and test helpers to the target project. Install both for the full convention set, or select either skill independently.
 
