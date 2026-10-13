@@ -1,22 +1,31 @@
 # Agent skills
 
-Reusable coding conventions for Next.js, JavaScript, and TypeScript, extracted from [og-tools](https://github.com/DanielFryy/og-tools).
+Reusable coding conventions for JavaScript, TypeScript, React, and Next.js, extracted from [og-tools](https://github.com/DanielFryy/og-tools). The React conventions also apply to React Native and Expo.
 
 ## Skills
 
-| Skill                                                                                  | What it covers                                                                                   |
-| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| [next-page-composition](skills/next-page-composition/SKILL.md)                         | Server-first App Router pages, metadata, colocated component files, JSX handlers, and props.     |
-| [javascript-typescript-conventions](skills/javascript-typescript-conventions/SKILL.md) | Named constants before default exports, body destructuring, guard clauses, explicit multiline function bodies, and functions in objects. |
+| Skill | What it covers |
+| --- | --- |
+| [javascript-typescript-conventions](skills/javascript-typescript-conventions/SKILL.md) | Named constants before default exports, compact objects and types, body destructuring, guard clauses, and function bodies. |
+| [react-component-conventions](skills/react-component-conventions/SKILL.md) | Component files, readonly props, JSX handlers, conditional rendering, prop passing, and tests for React web, React Native, and Expo. |
+| [next-page-composition](skills/next-page-composition/SKILL.md) | Server-first App Router pages, metadata, shared page/layout props, and client boundaries. |
 
-These are opinionated coding conventions. The Next.js skill adapts paths, package manager commands, and test helpers to the target project. Install both for the full convention set, or select either skill independently.
+These are opinionated coding conventions. Each skill can be used independently. For React, React Native, or Expo, install the JavaScript/TypeScript and React skills. Add the Next.js skill for Next.js App Router projects. Paths, package manager commands, styling, and test helpers adapt to the target project.
+
+General React guidance previously included in `next-page-composition` now lives in `react-component-conventions`. Existing Next.js users should install the React skill as well to retain that guidance.
 
 ## Install
 
-Run in the project where you want the skills:
+Run in the project where you want the skills. For React, React Native, or Expo:
 
 ```sh
-npx skills add DanielFryy/agent-skills --skill next-page-composition --skill javascript-typescript-conventions
+npx skills add DanielFryy/agent-skills --skill javascript-typescript-conventions --skill react-component-conventions
+```
+
+For Next.js:
+
+```sh
+npx skills add DanielFryy/agent-skills --skill javascript-typescript-conventions --skill react-component-conventions --skill next-page-composition
 ```
 
 To install only one:
