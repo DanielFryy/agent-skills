@@ -6,7 +6,7 @@ Reusable coding conventions for JavaScript, TypeScript, React, and Next.js, extr
 
 | Skill | What it covers |
 | --- | --- |
-| [javascript-typescript-conventions](skills/javascript-typescript-conventions/SKILL.md) | Named constants before default exports, compact objects and types, body destructuring, guard clauses, and function bodies. |
+| [javascript-typescript-conventions](skills/javascript-typescript-conventions/SKILL.md) | Blank lines, declaration order, named constants before default exports, compact objects and types, body destructuring, guard clauses, and function bodies. |
 | [react-component-conventions](skills/react-component-conventions/SKILL.md) | Component files, readonly props, JSX handlers, conditional rendering, prop passing, and tests for React web, React Native, and Expo. |
 | [next-page-composition](skills/next-page-composition/SKILL.md) | Server-first App Router pages, metadata, shared page/layout props, and client boundaries. |
 

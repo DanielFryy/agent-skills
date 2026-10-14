@@ -1,11 +1,47 @@
 ---
 name: javascript-typescript-conventions
-description: Apply JavaScript and TypeScript conventions for default exports, compact objects and types, destructuring, function bodies, and guard clauses when writing or reviewing JS, TS, JSX, or TSX.
+description: Apply JavaScript and TypeScript conventions for blank lines, declaration order, default exports, compact objects and types, destructuring, function bodies, and guard clauses when writing or reviewing JS, TS, JSX, or TSX.
 ---
 
 # JavaScript and TypeScript conventions
 
 Apply these conventions to code being written or edited. They also apply to callbacks and component functions.
+
+## Blank lines and declaration order
+
+Leave one blank line before every `export` or `return` when preceding code exists in the same scope. This includes named exports, default exports, re-exports, and early returns. Do not add a leading blank line at the start of a file or block, or separate a `return` from its expression. For a one-line guard such as `if (!value) return;`, put the separating blank line before the whole guard when it follows other code.
+
+Separate declarations such as functions, types, interfaces, classes, and enums from surrounding code with one blank line above and below. Consecutive non-function `const` declarations may stay together without blank lines. A function stored in a `const` is still a function: separate it from data declarations and other functions, even when its body fits on one line. Exported constants still require a blank line before each `export`.
+
+Within each scope, place non-function `const`/`let` declarations before function declarations and function-valued constants. Preserve initialization dependencies and execution order when refactoring; if this ordering cannot be achieved without changing behavior, report the conflict instead of moving declarations mechanically. Blank lines separate neighboring code; they are not needed immediately inside opening or closing braces.
+
+```ts
+type Label = string;
+
+interface NamedValue { label: Label; }
+
+const value = 0;
+const square = 2;
+const root = "any value";
+
+const foo = () => {};
+
+const foo2 = () => {};
+
+function foo3() {}
+
+const getLabel = (item: NamedValue) => {
+  const { label } = item;
+
+  if (!label) return root;
+
+  return label;
+};
+
+export { foo, foo2, foo3, getLabel };
+
+export default root;
+```
 
 ## Default exports of constants
 
@@ -17,6 +53,7 @@ export default defineConfig({});
 
 // Prefer
 const config = defineConfig({});
+
 export default config;
 ```
 
@@ -26,6 +63,7 @@ Use a descriptive local name. If that name conflicts with an import or another b
 import config from "./base-config";
 
 const projectConfig = defineConfig(config);
+
 export default projectConfig;
 ```
 
@@ -55,12 +93,14 @@ When an inline parameter type fits, also collapse the surrounding function signa
 
 ```ts
 type LayoutProps = Readonly<{ children: React.ReactNode; }>;
+
 interface NamedItem { name: string; }
 ```
 
 ```tsx
 const RootLayout = (props: Readonly<{ children: React.ReactNode; }>) => {
   const { children } = props;
+
   return (
     <html lang="en">
       <body>{children}</body>
@@ -76,6 +116,7 @@ Accept each object parameter by name and destructure it inside the function body
 ```ts
 const getLabel = (options: LabelOptions) => {
   const { name, prefix } = options;
+
   return `${prefix}${name}`;
 };
 ```
@@ -151,13 +192,15 @@ Define a function inline in an object only when its entire property definition f
 This applies to any object containing functions, including returned objects, assigned objects, configuration objects, and objects passed as arguments. Hook return values are only one example. Apply it to both function-valued properties and method shorthand. When refactoring an existing method, preserve its receiver behavior and any use of `this`, `arguments`, or `super` rather than mechanically changing its semantics.
 
 ```ts
-const start = () => {
-  resetProgress();
-  beginProcessing();
-};
+const createActions = () => {
+  const start = () => {
+    resetProgress();
+    beginProcessing();
+  };
 
-const actions = {
-  start,
-  stop: () => setIsRunning(false)
+  return {
+    start,
+    stop: () => setIsRunning(false)
+  };
 };
 ```
