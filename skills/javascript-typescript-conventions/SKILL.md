@@ -1,6 +1,6 @@
 ---
 name: javascript-typescript-conventions
-description: Apply JavaScript and TypeScript conventions for blank lines, declaration order, default exports, compact objects and types, destructuring, function bodies, and guard clauses when writing or reviewing JS, TS, JSX, or TSX.
+description: Apply JavaScript and TypeScript conventions for blank lines, declaration order, default exports, compact objects and types, destructuring, long strings, function bodies, and conditional braces when writing or reviewing JS, TS, JSX, or TSX.
 ---
 
 # JavaScript and TypeScript conventions
@@ -72,6 +72,26 @@ export default projectConfig;
 Use the project's configured formatter, such as Prettier, oxfmt, Biome, or another formatter. Read its configuration and any overrides or command options that apply to the file to determine the effective print width or line width. If no width is configured, use that formatter's default. If no formatter is configured, follow the project's documented line-width convention or surrounding code style.
 
 Apply this width to every rule below about fitting on one line, including indentation and surrounding syntax. Run the project's formatter after edits. If it forces a different layout, report the conflict rather than changing formatter settings or adding ignore directives solely to enforce this convention.
+
+## Long strings in expressions
+
+When an inline string makes a call or another expression exceed the effective line width, extract the string into a descriptively named local `const` and use that identifier in the expression. Merely wrapping the call around the inline string does not satisfy this rule. Keep the constant in the narrowest appropriate scope, such as inside the conditional branch where it is used, and preserve the string's exact value and evaluation order, including any template-literal interpolations.
+
+```ts
+// Avoid
+if (anyCondition) {
+  console.error("Really long text just to prove a point where one line can exceed the line width limit set in config.");
+}
+
+// Prefer
+if (anyCondition) {
+  const message =
+    "Really long text just to prove a point where one line can exceed the line width limit set in config.";
+  console.error(message);
+}
+```
+
+Let the formatter lay out the constant declaration. A string literal can still exceed the width on its own; keep it intact rather than inserting newlines into its value or splitting it into concatenated fragments solely to meet the width.
 
 ## Compact object literals
 
@@ -171,7 +191,20 @@ const processKey = (key: string) => {
 };
 ```
 
-Omit braces for an `if` body consisting of a single statement that fits on one line. Use braces when the body spans multiple lines. Keep braces when JavaScript syntax or control flow requires them, such as for multiple statements, lexical declarations, or avoiding a dangling `else`. This conditional-body rule does not change the explicit-body requirement for multiline functions below.
+Omit braces for an `if` body only when the entire `if` statement, including the condition and its single body statement, stays on one line within the effective line width after formatting. If the body starts on a new line, always enclose it in `{` and `}`, even if the body itself is only one line. A multiline condition or body also requires braces. Apply the same rule to `else if` and `else` bodies: a body on a new line must be braced.
+
+```ts
+// Avoid
+if (anyCondition)
+  console.error(message);
+
+// Prefer when keeping the body on a new line
+if (anyCondition) {
+  console.error(message);
+}
+```
+
+Keep braces when JavaScript syntax or control flow requires them, such as for multiple statements, lexical declarations, or avoiding a dangling `else`. Recheck after formatting: if an unbraced conditional wraps onto multiple lines, add braces and format again. This conditional-body rule does not change the explicit-body requirement for multiline functions below.
 
 ## Multiline functions
 
