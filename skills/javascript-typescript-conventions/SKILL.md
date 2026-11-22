@@ -1,6 +1,6 @@
 ---
 name: javascript-typescript-conventions
-description: Apply JavaScript and TypeScript conventions for blank lines, declaration order, default exports, compact objects and types, destructuring, long strings, function bodies, conditional braces, and nested ternaries when writing or reviewing JS, TS, JSX, or TSX.
+description: Apply JavaScript and TypeScript conventions for blank lines, declaration order, default exports, compact objects and types, named object parameter types, destructuring, long strings, function bodies, conditional braces, and nested ternaries when writing or reviewing JS, TS, JSX, or TSX.
 ---
 
 # JavaScript and TypeScript conventions
@@ -109,23 +109,15 @@ JSON.stringify({
 
 Apply the same one-line rule to TypeScript object type literals, type aliases, and interface declarations. Keep them on one line when the complete resulting line fits within the project's line width, including indentation, declaration names, generic wrappers such as `Readonly<...>`, and surrounding syntax. Apply the rule to nested types independently, and preserve comments and content that require line breaks.
 
-When an inline parameter type fits, also collapse the surrounding function signature onto one line if the entire signature through the opening body brace fits. A multiline function body does not require a multiline signature. Preserve the existing type structure and follow the project's formatter for member separators.
+Follow the project's formatter for member separators. With a named object parameter type, keep the function signature on one line when it fits through the opening body brace, even when the body spans multiple lines.
 
 ```ts
-type LayoutProps = Readonly<{ children: React.ReactNode; }>;
-
 interface NamedItem { name: string; }
-```
 
-```tsx
-const RootLayout = (props: Readonly<{ children: React.ReactNode; }>) => {
-  const { children } = props;
+const getName = (item: Readonly<NamedItem>) => {
+  const { name } = item;
 
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  );
+  return name;
 };
 ```
 
@@ -135,14 +127,23 @@ When a function needs more than one argument, accept a single object parameter n
 
 Accept each object parameter by name and destructure it inside the function body. Never destructure an object in a function signature.
 
+In TypeScript, give each object parameter a named type or interface. Extract any object type literal from the parameter annotation, even when it fits on one line or appears inside a wrapper such as `Readonly<...>`. In a plain TypeScript file, the declaration can live alongside the function. For React components, put component-owned types in `ComponentName.types.ts` as described in the [React component conventions](../react-component-conventions/SKILL.md#component-shape).
+
 ```ts
-// Avoid
-const formatName = (name: string, prefix: string) => {
+// Avoid positional arguments
+const formatName = (name: string, prefix: string) => `${prefix}${name}`;
+
+// Avoid an inline object parameter type
+const formatName = (params: { name: string; prefix: string; }) => {
+  const { name, prefix } = params;
+
   return `${prefix}${name}`;
 };
 
 // Prefer
-const formatName = (params: { name: string; prefix: string; }) => {
+type FormatNameParams = { name: string; prefix: string; };
+
+const formatName = (params: FormatNameParams) => {
   const { name, prefix } = params;
 
   return `${prefix}${name}`;
