@@ -127,7 +127,7 @@ When a function needs more than one argument, accept a single object parameter n
 
 Accept each object parameter by name and destructure it inside the function body. Never destructure an object in a function signature.
 
-In TypeScript, give each object parameter a named type or interface. Extract any object type literal from the parameter annotation, even when it fits on one line or appears inside a wrapper such as `Readonly<...>`. In a plain TypeScript file, the declaration can live alongside the function. For React components, put component-owned types in `ComponentName.types.ts` as described in the [React component conventions](../react-component-conventions/SKILL.md#component-shape).
+In TypeScript, give each object parameter a named type or interface. Extract any object type literal from the parameter annotation, even when it fits on one line or appears inside a wrapper such as `Readonly<...>`. Place the declaration alongside the function or in a dedicated types file, following the project's conventions.
 
 ```ts
 // Avoid positional arguments
