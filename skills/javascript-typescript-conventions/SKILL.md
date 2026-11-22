@@ -200,23 +200,20 @@ These examples show the grouping pattern. Choose the number of keys per declarat
 
 Never nest a ternary (`?:`) expression in the condition or either branch of another ternary, including in JSX. Use named values for independent choices. When a branch performs work that should run only if selected, use `if` statements or early returns to preserve evaluation order.
 
-```tsx
+```ts
 // Avoid
-return (
-  <p>
-    {transport
-      ? es ? "Simulación de prueba" : "Test simulation"
-      : es ? "La IA está desconectada. Puedes buscar en la documentación." : "AI is disconnected. You can search the documentation."}
-  </p>
-);
+function getStockLabel(quantity: number) {
+  return quantity <= 0 ? "Sold out" : quantity < 5 ? "Low stock" : "In stock";
+}
 
 // Prefer
-const simulationMessage = es ? "Simulación de prueba" : "Test simulation";
-const disconnectedMessage = es
-  ? "La IA está desconectada. Puedes buscar en la documentación."
-  : "AI is disconnected. You can search the documentation.";
+function getStockLabel(quantity: number) {
+  if (quantity <= 0) return "Sold out";
 
-return <p>{transport ? simulationMessage : disconnectedMessage}</p>;
+  if (quantity < 5) return "Low stock";
+
+  return "In stock";
+}
 ```
 
 ## Guard clauses and conditional bodies
