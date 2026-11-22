@@ -1,6 +1,6 @@
 ---
 name: javascript-typescript-conventions
-description: Apply JavaScript and TypeScript conventions for blank lines, declaration order, default exports, compact objects and types, destructuring, long strings, function bodies, and conditional braces when writing or reviewing JS, TS, JSX, or TSX.
+description: Apply JavaScript and TypeScript conventions for blank lines, declaration order, default exports, compact objects and types, destructuring, long strings, function bodies, conditional braces, and nested ternaries when writing or reviewing JS, TS, JSX, or TSX.
 ---
 
 # JavaScript and TypeScript conventions
@@ -195,6 +195,26 @@ consumeRemainingOptions(rest3);
 ```
 
 These examples show the grouping pattern. Choose the number of keys per declaration to fit the configured width, including indentation and any rest binding. Create rest objects for their remaining properties, not just to wrap lines.
+
+## Nested ternary expressions
+
+Never nest a ternary (`?:`) expression in the condition or either branch of another ternary, including in JSX. Use named values for independent choices. When a branch performs work that should run only if selected, use `if` statements or early returns to preserve evaluation order.
+
+```ts
+// Avoid
+function getStockLabel(quantity: number) {
+  return quantity <= 0 ? "Sold out" : quantity < 5 ? "Low stock" : "In stock";
+}
+
+// Prefer
+function getStockLabel(quantity: number) {
+  if (quantity <= 0) return "Sold out";
+
+  if (quantity < 5) return "Low stock";
+
+  return "In stock";
+}
+```
 
 ## Guard clauses and conditional bodies
 
