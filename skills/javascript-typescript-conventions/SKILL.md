@@ -131,7 +131,23 @@ const RootLayout = (props: Readonly<{ children: React.ReactNode; }>) => {
 
 ## Object parameters
 
+When a function needs more than one argument, accept a single object parameter named `params` or `config` instead of multiple positional parameters. Exempt callbacks and APIs whose signatures are defined externally, such as array method callbacks, event handlers, and library APIs requiring positional arguments.
+
 Accept each object parameter by name and destructure it inside the function body. Never destructure an object in a function signature.
+
+```ts
+// Avoid
+const formatName = (name: string, prefix: string) => {
+  return `${prefix}${name}`;
+};
+
+// Prefer
+const formatName = (params: { name: string; prefix: string; }) => {
+  const { name, prefix } = params;
+
+  return `${prefix}${name}`;
+};
+```
 
 ```ts
 const getLabel = (options: LabelOptions) => {
